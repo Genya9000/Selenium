@@ -1,25 +1,41 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 public class TestLearn {
     public static void main(String[] args) {
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.selenium.dev");
         driver.manage().window().maximize();
-        new WebDriverWait(driver, 20)
-                .until(CustomConditions.jQueryAJAXsCompleted());
+        /*new WebDriverWait(driver, 20)
+                .until(CustomConditions.jQueryAJAXsCompleted());*/
+
         WebElement searchInput = getWaitElement(driver, By.id("gsc-i-id1"));
         searchInput.sendKeys("selenium java", Keys.ENTER);
+
         getWaitElement(driver, By.xpath("//*[@class='gsc-webResult gsc-result']"));
-        List<WebElement> searchResults =  driver.findElements(By.xpath("//*[@class='gsc-webResult gsc-result']"));
+        Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+                .withTimeout(Duration.ofSeconds(15))
+                .pollingEvery(Duration.ofSeconds(3))
+                .ignoring(NoSuchElementException.class)
+                .ignoring(StaleElementReferenceException.class)
+                .withMessage("Timeout for waiting search result list was exceeded!");
+
+        List<WebElement> searchResults =  wait.until(new Function<WebDriver, List<WebElement>>() {
+            @Override
+            public List<WebElement> apply(WebDriver driver) {
+                return driver.findElements(By.xpath("//*[@class='gsc-webResult gsc-result']"));
+            }
+        });
         System.out.println("numders of results set is " + searchResults.size());
         driver.quit();
 
