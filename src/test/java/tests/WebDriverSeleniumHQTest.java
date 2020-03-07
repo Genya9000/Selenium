@@ -34,12 +34,8 @@ public class WebDriverSeleniumHQTest {
             .ignoring(StaleElementReferenceException.class)
             .withMessage("Timeout for waiting search result list was exceeded!");
 
-    List<WebElement> searchResults =  wait.until(new Function<WebDriver, List<WebElement>>() {
-        @Override
-        public List<WebElement> apply(WebDriver driver) {
-            return driver.findElements(By.xpath("//*[@class='gsc-webResult gsc-result']"));
-        }
-    });
+    List<WebElement> searchResults =  wait.until(driver1 -> driver1
+            .findElements(By.xpath("//*[@class='gsc-webResult gsc-result']")));
         System.out.println("numders of results set is " + searchResults.size());
         Assert.assertTrue(searchResults.size()>0, "search results are empty");
         driver.quit();

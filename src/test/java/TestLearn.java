@@ -42,7 +42,7 @@ public class TestLearn {
 
     }
 
-    private static WebElement getWaitElement(WebDriver driver, By by) {
+    public static WebElement getWaitElement(WebDriver driver, By by) {
         return new WebDriverWait(driver, 10)
                     .until(ExpectedConditions.presenceOfElementLocated(by));
     }
