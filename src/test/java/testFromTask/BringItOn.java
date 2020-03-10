@@ -14,14 +14,14 @@ import page.PastebinHomePage;
 
 public class BringItOn {
     private WebDriver driver;
-    PastebinHomePage pastebinHomePage = new PastebinHomePage(driver);
+    private PastebinHomePage pastebinHomePage;
     private String CODE_TEXT = "git config --global user.name  \\\"New Sheriff in Town\\\"\\n\" +\n" +
             "                        \"git reset $(git commit-tree HEAD^{tree} -m \\\"Legacy code\\\")\\n\" +\n" +
             "                        \"git push origin master --force";
     private String TITLE_TEXT = "how to gain dominance among developers";
     @Test
     public void createNewPasteSucces(){
-        new PastebinHomePage(driver).openPage()
+        pastebinHomePage.openPage()
                 .insertCode(CODE_TEXT)
                 .chooseBashHighlighting()
                 .choose10Minutes()
@@ -36,6 +36,7 @@ public class BringItOn {
     public void browserSetup(){
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+         pastebinHomePage = new PastebinHomePage(driver);
     }
     @AfterMethod(alwaysRun = true)
     public void browserTearDown(){
