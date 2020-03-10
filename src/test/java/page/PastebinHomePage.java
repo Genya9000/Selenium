@@ -24,11 +24,11 @@ public class PastebinHomePage {
     private WebElement createNewPasteButton;
     @FindBy(xpath = "//span[text()='None']")
     private WebElement syntaxHighlightingInput;
-    @FindBy(xpath = "//li[text()='Bash'][@id='select2-paste_format-mn-result-blxh-8']")
+    @FindBy(xpath = "//li[text()='Bash'][1]")
     private WebElement bashButton;
     @FindBy(xpath = "//a[contains(text(),'Bash')]")
     private WebElement highlightingText;
-    @FindBy(xpath = "//h1")
+    @FindBy(xpath = "//div[@class='paste_box_line1'])")
     private WebElement title;
     @FindBy(xpath = "//textarea[@id='paste_code']")
     private WebElement codeTextArea;
@@ -69,7 +69,7 @@ public class PastebinHomePage {
     }
     public String getTitle(){
         WebElement element =  new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.presenceOfElementLocated((By) title));
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@class='paste_box_line1']")));
         return element.getText();
     }
     public String getSintacs(){
