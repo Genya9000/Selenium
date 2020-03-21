@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
@@ -31,25 +32,25 @@ public class CloudGoogleHomePage {
     private WebElement n1Standart8;
     @FindBy(xpath = "//div[contains(text(), '  Add GPUs.')]")
     private WebElement addGpuCheckBox;
-    @FindBy(xpath = "//md-select[@id=\"select_897\"]")
+    @FindBy(xpath = "//md-select-value[@id=\"select_value_label_326\"]")
     private WebElement numberOfGpusInput;
-    @FindBy(xpath = "//md-option[@id='select_option_331']")
+    @FindBy(xpath = "//md-option[@id='select_option_333']")
     private WebElement count1Gpu;
-    @FindBy(id = "select_328")
+    @FindBy(xpath = "//md-select-value[@id='select_value_label_327']")
     private WebElement gpyType;
-    @FindBy(id = "select_option_338")
+    @FindBy(xpath = "//div[@class='md-text ng-binding'][contains(text(), 'NVIDIA Tesla V100')]")
     private WebElement typeTeslaV100;
     @FindBy(id = "select_167")
     private WebElement localSsdField;
     @FindBy(id = "select_option_229")
     private WebElement ssdCapacity;
-    @FindBy(id = "select_82")
+    @FindBy(xpath = "//md-select-value[@id='select_value_label_53']")
     private WebElement dataLocationInput;
     @FindBy(id = "select_option_177")
     private WebElement locationfrankfurt;
     @FindBy(id = "select_89")
     private WebElement commitedUsageInput;
-    @FindBy(id = "select_option_102")
+    @FindBy(xpath = "//*[@id=\"select_option_87\"]/div[1]")
     private WebElement usageYear;
     @FindBy(xpath = "//button[contains(text(),  \"    Add to Estimate\")][@class='md-raised md-primary cpc-button md-button md-ink-ripple'][@ng-click='listingCtrl.addComputeServer(ComputeEngineForm);']")
     private WebElement addToEstimateButton;
@@ -87,11 +88,6 @@ public class CloudGoogleHomePage {
         return this;
     }
     public CloudGoogleHomePage selectComputeEngineSection(){
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         driver.switchTo().frame(0).switchTo().frame("myFrame");
         wait.until(ExpectedConditions.visibilityOf(computeEngineSection)).click();
         return this;
@@ -101,18 +97,24 @@ public class CloudGoogleHomePage {
         numberInstancesInput.sendKeys("4");
         instanceTypeSelect.click();
         wait.until(ExpectedConditions.visibilityOf(n1Standart8)).click();
-        addGpuCheckBox.click();
+        wait.until(ExpectedConditions.elementToBeClickable(addGpuCheckBox)).click();
         wait.until(ExpectedConditions.visibilityOf(numberOfGpusInput)).click();
-        wait.until(ExpectedConditions.visibilityOf(count1Gpu)).click();
-        gpyType.click();
-        wait.until(ExpectedConditions.visibilityOf(typeTeslaV100)).click();
+        Actions actions = new Actions(driver);
+        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(count1Gpu))).build();
+        count1Gpu.click();
+        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(gpyType))).build();
+        wait.until(ExpectedConditions.elementToBeClickable(gpyType)).click();
+
+        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(typeTeslaV100))).build();
+        typeTeslaV100.click();
         localSsdField.click();
         wait.until(ExpectedConditions.visibilityOf(ssdCapacity)).click();
+        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(dataLocationInput))).build();
         dataLocationInput.click();
         wait.until(ExpectedConditions.visibilityOf(locationfrankfurt)).click();
         commitedUsageInput.click();
-        wait.until(ExpectedConditions.visibilityOf(usageYear)).click();
-        addToEstimateButton.click();
+        wait.until(ExpectedConditions.elementToBeClickable(usageYear)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(addToEstimateButton)).click();
         return this;
     }
 public boolean vmClassContainRegular(){

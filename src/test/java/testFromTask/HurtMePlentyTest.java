@@ -32,21 +32,22 @@ public class HurtMePlentyTest {
         Assert.assertEquals(true, cloudGoogleHomePage.paymentCheck());
     }
 
-    @Test
+    /*@Test
     public void fieldCheck1(){
         driver.get("https://cloud.google.com/products/calculator");
-       /* (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myFrame"));*/
+       *//* (new WebDriverWait(driver, 10))
+                .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myFrame"));*//*
         driver.switchTo().frame(0).switchTo().frame("myFrame");
 
 
-    }
+    }*/
 
 
     @BeforeMethod(alwaysRun = true)
     public void browserSetup(){
         driver = new ChromeDriver();
         driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         cloudGoogleHomePage = new CloudGoogleHomePage(driver);
     }
     @AfterMethod(alwaysRun = true)
