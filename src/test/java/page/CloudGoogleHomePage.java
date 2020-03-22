@@ -130,7 +130,7 @@ public boolean localSSDCheck(){
         return localSSDValue.getText().contains("2x375 GB");
 }
 public boolean paymentCheck(){
-        return paymentValues.get(0).getText().contains("1,288.71");
+        return paymentValues.get(0).getText().contains("1,082.77");
 }
 
 }
