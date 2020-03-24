@@ -32,15 +32,22 @@ public class HurtMePlentyTest {
         Assert.assertEquals(true, cloudGoogleHomePage.paymentCheck());
     }
 
-    /*@Test
+    @Test
     public void fieldCheck1(){
-        driver.get("https://cloud.google.com/products/calculator");
-       *//* (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.frameToBeAvailableAndSwitchToIt("myFrame"));*//*
-        driver.switchTo().frame(0).switchTo().frame("myFrame");
+        cloudGoogleHomePage.openPage()
+                .enterInSearchBox(SEARCH_TEXT)
+                .clickOnCalcolatorLink()
+                .selectComputeEngineSection()
+                .fillInTheForm()
+                .emailEstimateButtonClick()
+                .openMailservice()
+                .copyMailAddress()
+                .insertMail()
+                .sendMail();
+        Assert.assertEquals(true, cloudGoogleHomePage.paymentCheckFromMail());
 
 
-    }*/
+    }
 
 
     @BeforeMethod(alwaysRun = true)

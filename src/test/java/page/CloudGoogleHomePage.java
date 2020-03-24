@@ -12,12 +12,16 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CloudGoogleHomePage {
     private WebDriver driver;
     private WebDriverWait wait;
+    private ArrayList<String> tabs;
+    private Actions actions;
     private static final String HOMEPAGE_URL = "https://cloud.google.com/ ";
+    private static final String MAILPAGE_URL = " https://10minutemail.com";
     @FindBy(xpath = "//input[@class='devsite-search-field devsite-search-query']")
     private WebElement searchBotton;
     @FindBy(linkText = "Google Cloud Platform Pricing Calculator")
@@ -64,7 +68,20 @@ public class CloudGoogleHomePage {
     private WebElement localSSDValue;
     @FindBy(xpath = "//b[@class=\"ng-binding\"][contains(text(), 'Cost:')]")
     private List<WebElement> paymentValues;
-
+    @FindBy(id = "email_quote")
+    private WebElement emailEstimateButton;
+    @FindBy(id = "copy_address")
+    private WebElement copyButton;
+    @FindBy(id = "input_367")
+    private WebElement inputMail;
+    @FindBy(xpath = "//button[@class=\"md-raised md-primary cpc-button md-button md-ink-ripple\"][@ng-click=\"emailQuote.emailQuote(true); emailQuote.$mdDialog.hide()\"]")
+    private WebElement sendMailButton;
+    @FindBy(xpath = "//div[@class='small_sender']")
+    private WebElement openMailLink;
+    @FindBy(xpath = "//span[@id='inbox_count_number']")
+    private WebElement inboxCaunt;
+    @FindBy(xpath = "//h2[contains(text(), 'Estimated Monthly Cost: ')]")
+    private WebElement peymentCauntFromMail;
 
 
 
@@ -99,7 +116,7 @@ public class CloudGoogleHomePage {
         wait.until(ExpectedConditions.visibilityOf(n1Standart8)).click();
         wait.until(ExpectedConditions.elementToBeClickable(addGpuCheckBox)).click();
         wait.until(ExpectedConditions.visibilityOf(numberOfGpusInput)).click();
-        Actions actions = new Actions(driver);
+        actions = new Actions(driver);
         actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(count1Gpu))).build();
         count1Gpu.click();
         actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(gpyType))).build();
@@ -107,14 +124,39 @@ public class CloudGoogleHomePage {
 
         actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(typeTeslaV100))).build();
         typeTeslaV100.click();
-        localSsdField.click();
-        wait.until(ExpectedConditions.visibilityOf(ssdCapacity)).click();
+        actions.moveToElement(localSsdField).click();
+        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(ssdCapacity))).click();
         actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(dataLocationInput))).build();
         dataLocationInput.click();
-        wait.until(ExpectedConditions.visibilityOf(locationfrankfurt)).click();
-        commitedUsageInput.click();
-        wait.until(ExpectedConditions.elementToBeClickable(usageYear)).click();
-        wait.until(ExpectedConditions.elementToBeClickable(addToEstimateButton)).click();
+        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(locationfrankfurt))).click();
+        actions.moveToElement(wait.until(ExpectedConditions.elementToBeClickable(commitedUsageInput))).click();
+        actions.moveToElement(wait.until(ExpectedConditions.elementToBeClickable(usageYear))).click();
+        actions.moveToElement(wait.until(ExpectedConditions.elementToBeClickable(addToEstimateButton))).click();
+        return this;
+    }
+    public CloudGoogleHomePage emailEstimateButtonClick(){
+        wait.until(ExpectedConditions.elementToBeClickable(emailEstimateButton)).click();
+        return this;
+    }
+    public  CloudGoogleHomePage openMailservice(){
+        driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
+         tabs = new ArrayList<String> (driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(1));
+        driver.get(MAILPAGE_URL);
+        return this;
+    }
+    public CloudGoogleHomePage copyMailAddress(){
+        wait.until(ExpectedConditions.elementToBeClickable(copyButton)).click();
+        return this;
+    }
+    public CloudGoogleHomePage insertMail(){
+        driver.switchTo().window(tabs.get(0));
+        wait.until(ExpectedConditions.elementToBeClickable(inputMail)).click();
+        actions.sendKeys(Keys.chord(Keys.LEFT_CONTROL, "v")).build().perform();
+        return this;
+    }
+    public CloudGoogleHomePage sendMail(){
+        wait.until(ExpectedConditions.elementToBeClickable(sendMailButton)).click();
         return this;
     }
 public boolean vmClassContainRegular(){
@@ -131,6 +173,13 @@ public boolean localSSDCheck(){
 }
 public boolean paymentCheck(){
         return paymentValues.get(0).getText().contains("1,082.77");
+}
+public boolean paymentCheckFromMail(){
+    driver.switchTo().window(tabs.get(1));
+    boolean ifSend = wait.until(ExpectedConditions.textToBePresentInElement(inboxCaunt, "1"));
+    if (ifSend) inboxCaunt.click();
+    wait.until(ExpectedConditions.elementToBeClickable(openMailLink)).click();
+    return wait.until(ExpectedConditions.visibilityOf(typeTeslaV100)).getText().contains("1,082.77");
 }
 
 }
