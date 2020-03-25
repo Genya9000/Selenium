@@ -20,6 +20,7 @@ public class CloudGoogleHomePage {
     private WebDriverWait wait;
     private ArrayList<String> tabs;
     private Actions actions;
+    private String oldTab;
     private static final String HOMEPAGE_URL = "https://cloud.google.com/ ";
     private static final String MAILPAGE_URL = " https://10minutemail.com";
     @FindBy(xpath = "//input[@class='devsite-search-field devsite-search-query']")
@@ -124,14 +125,20 @@ public class CloudGoogleHomePage {
 
         actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(typeTeslaV100))).build();
         typeTeslaV100.click();
-        actions.moveToElement(localSsdField).click();
-        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(ssdCapacity))).click();
-        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(dataLocationInput))).build();
-        dataLocationInput.click();
-        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(locationfrankfurt))).click();
-        actions.moveToElement(wait.until(ExpectedConditions.elementToBeClickable(commitedUsageInput))).click();
-        actions.moveToElement(wait.until(ExpectedConditions.elementToBeClickable(usageYear))).click();
-        actions.moveToElement(wait.until(ExpectedConditions.elementToBeClickable(addToEstimateButton))).click();
+        actions.moveToElement(localSsdField).build();
+        localSsdField.click();
+        actions.moveToElement(ssdCapacity).build();
+        wait.until(ExpectedConditions.visibilityOf(ssdCapacity)).click();
+        actions.moveToElement(dataLocationInput).build();
+        wait.until(ExpectedConditions.elementToBeClickable(dataLocationInput)).click();
+        actions.moveToElement(locationfrankfurt).build();
+        wait.until(ExpectedConditions.elementToBeClickable(locationfrankfurt)).click();
+        actions.moveToElement(commitedUsageInput).build();
+        wait.until(ExpectedConditions.elementToBeClickable(commitedUsageInput)).click();
+        actions.moveToElement(usageYear).build();
+        wait.until(ExpectedConditions.elementToBeClickable(usageYear)).click();
+        actions.moveToElement(addToEstimateButton).build();
+        wait.until(ExpectedConditions.elementToBeClickable(addToEstimateButton)).click();
         return this;
     }
     public CloudGoogleHomePage emailEstimateButtonClick(){
@@ -139,9 +146,10 @@ public class CloudGoogleHomePage {
         return this;
     }
     public  CloudGoogleHomePage openMailservice(){
+        oldTab = driver.getWindowHandle();
         driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
          tabs = new ArrayList<String> (driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(1));
+        driver.switchTo().window(tabs.get(0));
         driver.get(MAILPAGE_URL);
         return this;
     }
@@ -150,7 +158,8 @@ public class CloudGoogleHomePage {
         return this;
     }
     public CloudGoogleHomePage insertMail(){
-        driver.switchTo().window(tabs.get(0));
+        actions.sendKeys(driver.findElement(By.cssSelector("body")), Keys.CONTROL +Keys.SHIFT + "t");
+        driver.switchTo().window(oldTab);
         wait.until(ExpectedConditions.elementToBeClickable(inputMail)).click();
         actions.sendKeys(Keys.chord(Keys.LEFT_CONTROL, "v")).build().perform();
         return this;
