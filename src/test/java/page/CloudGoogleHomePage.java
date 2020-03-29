@@ -1,10 +1,7 @@
 package page;
 
 import com.sun.xml.internal.bind.v2.model.core.ID;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
@@ -118,26 +115,26 @@ public class CloudGoogleHomePage {
         wait.until(ExpectedConditions.elementToBeClickable(addGpuCheckBox)).click();
         wait.until(ExpectedConditions.visibilityOf(numberOfGpusInput)).click();
         actions = new Actions(driver);
-        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(count1Gpu))).build();
-        count1Gpu.click();
-        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(gpyType))).build();
+        actions.moveToElement(count1Gpu).build().perform();
+        wait.until(ExpectedConditions.visibilityOf(count1Gpu)).click();
+        actions.moveToElement(gpyType).build().perform();
         wait.until(ExpectedConditions.elementToBeClickable(gpyType)).click();
 
-        actions.moveToElement(wait.until(ExpectedConditions.visibilityOf(typeTeslaV100))).build();
-        typeTeslaV100.click();
+        actions.moveToElement(typeTeslaV100).build().perform();
+        wait.until(ExpectedConditions.visibilityOf(typeTeslaV100)).click();
         actions.moveToElement(localSsdField).build();
         localSsdField.click();
         actions.moveToElement(ssdCapacity).build();
         wait.until(ExpectedConditions.visibilityOf(ssdCapacity)).click();
         actions.moveToElement(dataLocationInput).build();
         wait.until(ExpectedConditions.elementToBeClickable(dataLocationInput)).click();
-        actions.moveToElement(locationfrankfurt).build();
+        actions.moveToElement(locationfrankfurt).build().perform();
         wait.until(ExpectedConditions.elementToBeClickable(locationfrankfurt)).click();
-        actions.moveToElement(commitedUsageInput).build();
+        actions.moveToElement(commitedUsageInput).build().perform();
         wait.until(ExpectedConditions.elementToBeClickable(commitedUsageInput)).click();
-        actions.moveToElement(usageYear).build();
+        actions.moveToElement(usageYear).build().perform();
         wait.until(ExpectedConditions.elementToBeClickable(usageYear)).click();
-        actions.moveToElement(addToEstimateButton).build();
+        actions.moveToElement(addToEstimateButton).build().perform();
         wait.until(ExpectedConditions.elementToBeClickable(addToEstimateButton)).click();
         return this;
     }
@@ -147,9 +144,9 @@ public class CloudGoogleHomePage {
     }
     public  CloudGoogleHomePage openMailservice(){
         oldTab = driver.getWindowHandle();
-        driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
+        ((JavascriptExecutor)driver).executeScript("window.open()");
          tabs = new ArrayList<String> (driver.getWindowHandles());
-        driver.switchTo().window(tabs.get(0));
+        driver.switchTo().window(tabs.get(1));
         driver.get(MAILPAGE_URL);
         return this;
     }
@@ -158,7 +155,7 @@ public class CloudGoogleHomePage {
         return this;
     }
     public CloudGoogleHomePage insertMail(){
-        actions.sendKeys(driver.findElement(By.cssSelector("body")), Keys.CONTROL +Keys.SHIFT + "t");
+
         driver.switchTo().window(oldTab);
         wait.until(ExpectedConditions.elementToBeClickable(inputMail)).click();
         actions.sendKeys(Keys.chord(Keys.LEFT_CONTROL, "v")).build().perform();
