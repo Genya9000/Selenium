@@ -115,7 +115,7 @@ public class CloudGoogleHomePage {
         wait.until(ExpectedConditions.elementToBeClickable(addGpuCheckBox)).click();
         wait.until(ExpectedConditions.visibilityOf(numberOfGpusInput)).click();
         actions = new Actions(driver);
-        ((JavascriptExecutor)driver).executeScript("window.scrollBy(0,1000)");
+        ((JavascriptExecutor)driver).executeScript("scroll(0, 250);");
         wait.until(ExpectedConditions.elementToBeClickable(count1Gpu)).click();
         actions.moveToElement(gpyType).perform();
         wait.until(ExpectedConditions.elementToBeClickable(gpyType)).click();
@@ -123,7 +123,7 @@ public class CloudGoogleHomePage {
         actions.moveToElement(typeTeslaV100).click();
         wait.until(ExpectedConditions.elementToBeClickable(localSsdField));
         actions.moveToElement(localSsdField).click();
-        actions.moveToElement(ssdCapacity).perform();
+        //actions.moveToElement(ssdCapacity).perform();
         wait.until(ExpectedConditions.elementToBeClickable(ssdCapacity)).click();
         actions.moveToElement(dataLocationInput).perform();
         wait.until(ExpectedConditions.elementToBeClickable(dataLocationInput)).click();
